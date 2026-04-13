@@ -28,14 +28,14 @@ public class RegistrationPO {
         System.out.println("Enter Cell Phone Number (must start with +27):");
         String cellPhoneNumber = scanner.nextLine();
 
-        // Create login object
+      
         login user = new login(firstName, lastName, username, password, cellPhoneNumber);
 
-        // Register user
+      
         String registrationMessage = user.displayFullName();
         System.out.println(registrationMessage);
 
-        // Login section
+        
         if (registrationMessage.equals("User has been registered successfully.")) {
 
             System.out.println("\nLogin");
