@@ -6,77 +6,44 @@ package com.mycompany.registrationpo;
 
 public class RegistrationPO {
 
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String surname;
     private String username;
-    private String cellPhoneNumber;
+    private String password;
+    private String phone;
 
     private password passwordObj;
 
-    // Constructor
-    public RegistrationPO(String firstName,
-                        String lastName,
-                        String username,
-                        String password,
-                        String cellPhoneNumber) {
+    public RegistrationPO(String name, String surname,
+                        String username, String password,
+                        String phone) {
 
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
+        this.surname = surname;
         this.username = username;
-        this.cellPhoneNumber = cellPhoneNumber;
+        this.password = password;
+        this.phone = phone;
 
         passwordObj = new password(password);
     }
 
-    // Check username
-    public boolean checkUserName() {
+    public boolean checkUsername() {
         return username.contains("_") && username.length() <= 5;
     }
 
-    // Check password
     public boolean checkPassword() {
-        return passwordObj.checkPasswordComplexity();
+        return passwordObj.isValid();
     }
 
-    // Check phone number
-    public boolean checkCellPhoneNumber() {
-        return cellPhoneNumber.matches("\\+27\\d{9}");
+    public boolean checkPhone() {
+        return phone.startsWith("+27") && phone.length() == 12;
     }
 
-    // Register user
-    public String registerUser() {
-
-        if (!checkUserName()) {
-            return "please ensure that your username contains an underscore and is no more than five characters in length.";
-        }
-
-        if (!checkPassword()) {
-            return " please ensure that the password contains at least eight characters, a capital letter, a number, and a special character.";
-        }
-
-        if (!checkCellPhoneNumber()) {
-            return "Cell number is incorrectly formatted or does not contain an international code; please correct the number and try again.";
-        }
-
-        return "Username successfully captured.\n" +
-               "Password successfully captured.\n" +
-               "Cell number successfully captured.";
-    }
-
-    // Getters for login
     public String getUsername() {
         return username;
     }
 
     public String getPassword() {
-        return passwordObj.getPassword();
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
+        return password;
     }
 }

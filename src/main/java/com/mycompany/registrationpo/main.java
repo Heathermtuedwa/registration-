@@ -2,84 +2,100 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package com.mycompany.registrationpo;
-
-import java.util.Scanner;
 
 /**
  *
  * @author Student
  */
+package com.mycompany.registrationpo;
+
+import java.util.Scanner;
+
 public class main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
 
-        System.out.println("=== Registration ===");
+        String name;
+        String surname;
+        String username;
+        String password;
+        String phone;
 
-        // Collect user details
-        System.out.print("Enter first name: ");
-        String firstName = scanner.nextLine();
+        boolean valid = false;
 
-        System.out.print("Enter last name: ");
-        String lastName = scanner.nextLine();
+        // ================= REGISTRATION =================
+        while (!valid) {
 
-        System.out.print("Enter username (must contain _ and be max 5 characters): ");
-        String username = scanner.nextLine();
+            System.out.println("\n=== Registration ===");
 
-        System.out.print("Enter password (8+ chars, capital, number, special character): ");
-        String password = scanner.nextLine();
+            System.out.print("Enter name: ");
+            name = input.nextLine();
 
-        System.out.print("Enter cell phone number (e.g. +27838968976): ");
-        String cellPhone = scanner.nextLine();
-
-        // Create Registration object
-        RegistrationPO reg = new RegistrationPO(
-                firstName,
-                lastName,
-                username,
-                password,
-                cellPhone
-        );
-
-        // Attempt registration
-        System.out.println("\n" + reg.registerUser());
-
-        // Only proceed to login if registration is valid
-        if (reg.checkUserName()
-                && reg.checkPassword()
-                && reg.checkCellPhoneNumber()) {
-
-            // Create Login object
-            login login = new login(
-                    reg.getUsername(),
-                    reg.getPassword(),
-                    reg.getFirstName(),
-                    reg.getLastName()
-            );
-
-            System.out.println("\n=== Login ===");
+            System.out.print("Enter surname: ");
+            surname = input.nextLine();
 
             System.out.print("Enter username: ");
-            String enteredUsername = scanner.nextLine();
+            username = input.nextLine();
 
             System.out.print("Enter password: ");
-            String enteredPassword = scanner.nextLine();
+            password = input.nextLine();
 
-            // Display login result
-            System.out.println(
-                    "\n" + login.returnLoginStatus(
-                            enteredUsername,
-                            enteredPassword
-                    )
-            );
+            System.out.print("Enter phone (+27...): ");
+            phone = input.nextLine();
+
+            RegistrationPO reg = new RegistrationPO(name, surname, username, password, phone);
+
+            boolean usernameOK = reg.checkUsername();
+            boolean passwordOK = reg.checkPassword();
+            boolean phoneOK = reg.checkPhone();
+
+            // SHOW ALL ERRORS
+            if (!usernameOK) {
+                System.out.println("Username is wrong (must contain '_' and max 5 characters)");
+            }
+
+            if (!passwordOK) {
+                System.out.println("Password is wrong (must be 8 chars, uppercase, number & special character)");
+            }
+
+            if (!phoneOK) {
+                System.out.println("Phone number is not correct (must start +27 and be 12 digits)");
+            }
+
+            // SUCCESS ONLY IF ALL TRUE
+            if (usernameOK && passwordOK && phoneOK) {
+
+                System.out.println("Registration successful!");
+                System.out.println("Welcome " + username);
+
+                valid = true;
+
+            } else {
+
+                System.out.println("Please try again.\n");
+            }
         }
 
-        scanner.close();
-    }
+        // ================= LOGIN =================
 
+        System.out.println("\n=== LOGIN ===");
+
+        System.out.print("Enter username: ");
+        String enteredUsername = input.nextLine();
+
+        System.out.print("Enter password: ");
+        String enteredPassword = input.nextLine();
+
+        login userLogin = new login(username, password);
+
+        if (userLogin.loginUser(enteredUsername, enteredPassword)) {
+            System.out.println("Login successful!");
+        } else {
+            System.out.println("Username or password incorrect.");
+        }
+
+        input.close();
+    }
 }
