@@ -4,46 +4,57 @@
 
 package com.mycompany.registrationpo;
 
+import java.util.Scanner;
+
 public class RegistrationPO {
 
-    private String name;
-    private String surname;
-    private String username;
-    private String password;
-    private String phone;
+    public static void main(String[] args) {
 
-    private password passwordObj;
+        Scanner scanner = new Scanner(System.in);
 
-    public RegistrationPO(String name, String surname,
-                        String username, String password,
-                        String phone) {
+        // Registration details
+        System.out.print("Enter First Name: ");
+        String firstName = scanner.nextLine();
 
-        this.name = name;
-        this.surname = surname;
-        this.username = username;
-        this.password = password;
-        this.phone = phone;
+        System.out.print("Enter Last Name: ");
+        String lastName = scanner.nextLine();
 
-        passwordObj = new password(password);
-    }
+        System.out.println("Enter Username (must contain an underscore and be no more than five characters):");
+        String username = scanner.nextLine();
 
-    public boolean checkUsername() {
-        return username.contains("_") && username.length() <= 5;
-    }
+        System.out.println("Enter Password (must contain a capital letter, a number, a special character and be at least eight characters):");
+        String password = scanner.nextLine();
 
-    public boolean checkPassword() {
-        return passwordObj.isValid();
-    }
+        System.out.println("Enter Cell Phone Number (must start with +27):");
+        String cellPhoneNumber = scanner.nextLine();
 
-    public boolean checkPhone() {
-        return phone.startsWith("+27") && phone.length() == 12;
-    }
+        // Create login object
+        login user = new login(firstName, lastName, username, password, cellPhoneNumber);
 
-    public String getUsername() {
-        return username;
-    }
+        // Register user
+        String registrationMessage = user.displayFullName();
+        System.out.println(registrationMessage);
 
-    public String getPassword() {
-        return password;
+        // Login section
+        if (registrationMessage.equals("User has been registered successfully.")) {
+
+            System.out.println("\nLogin");
+
+            System.out.print("Enter username: ");
+            String loginUsername = scanner.nextLine();
+
+            System.out.print("Enter password: ");
+            String loginPassword = scanner.nextLine();
+
+            boolean loginResult =
+                    loginUsername.equals(user.getUsername()) &&
+                    loginPassword.equals(user.getPassword());
+
+            String loginMessage = user.returnLoginStatus(loginResult);
+
+            System.out.println(loginMessage);
+        }
+
+        scanner.close();
     }
 }
